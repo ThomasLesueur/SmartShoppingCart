@@ -1,8 +1,18 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from cart.models import Product
-from cart.serializers import ProductSerializer
+from rest_framework import generics
+from cart.models import Product, Discount
+from cart.serializers import ProductSerializer, DiscountSerializer
+
+class DiscountList(generics.ListCreateAPIView):
+    queryset = Discount.objects.all()
+    serializer_class = DiscountSerializer
+
+
+class DiscountDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Discount.objects.all()
+    serializer_class = DiscountSerializer
 
 @api_view(['GET', 'POST'])
 def product_list(request, format=None):
@@ -46,3 +56,4 @@ def product_detail(request, pk, format=None):
     elif request.method == 'DELETE':
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+

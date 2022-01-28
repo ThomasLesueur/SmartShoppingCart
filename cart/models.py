@@ -6,3 +6,9 @@ class Product(models.Model):
     
     class Meta:
         ordering = ['name']
+
+class Discount(models.Model):
+    category = models.CharField(max_length=200)
+
+    class Meta:
+        ordering = ['category']
