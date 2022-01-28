@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 from cart.models import Product, Discount
 from cart.serializers import ProductSerializer, DiscountSerializer
+from cart.services import Pack
 
 class DiscountList(generics.ListCreateAPIView):
     queryset = Discount.objects.all()
@@ -56,4 +57,16 @@ def product_detail(request, pk, format=None):
     elif request.method == 'DELETE':
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['POST'])
+def product_list(request, format=None):
+    if request.method == 'POST':
+        pack = Pack(request.data)
+        if pack.validate() == False:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        body = {
+            'amount': pack.calculate()
+        }
+        return Response(body)
+
 
