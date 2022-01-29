@@ -24,7 +24,7 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
 
 @api_view(['POST'])
-def product_list(request, format=None):
+def calculate_pack(request, format=None):
     if request.method == 'POST':
         pack = Pack(request.data)
         if pack.validate() == False:
