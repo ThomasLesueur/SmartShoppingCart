@@ -3,6 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from cart.models import Product, Discount
+from cart.services import Pack
 
 class ProductTestCase(APITestCase):
     def setUp(self):
@@ -38,19 +39,6 @@ class ProductTestCase(APITestCase):
         self.assertEqual(result, expected)
 
 
-
-    def test_get_product_detail(self):
-        response = self.client.get("/products/1/")
-        expected = {
-            'name' : 'tomato',
-            'price' : 1.0
-        }
-        result = response.data
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(result, expected)
-
-
 class DiscountTestCase(APITestCase):
     def setUp(self):
         Discount.objects.create(category='one plus one')
@@ -81,14 +69,26 @@ class DiscountTestCase(APITestCase):
         result = response.data
         self.assertEqual(result, expected)
 
+class PackTestCase(APITestCase):
+    def setUp(self):
+        Product.objects.create(name='ps5', price=500)
+        Discount.objects.create(category='one plus one')
+        Discount.objects.create(category='50 percent')
 
-
-    def test_get_discount_detail(self):
-        response = self.client.get("/discounts/1/")
-        expected = {
-            "category": "one plus one",
+    def test_validate(self):
+        data = {
+            "product_name" : "ps5",
+            "quantity" : 3,
+            "discounts" : ["one plus one", "50 percent"]
         }
-        result = response.data
+        pack = Pack(data)
+        self.assertEqual(pack.validate(), True)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(result, expected)
+    def test_calculate(self):
+        data = {
+            "product_name" : "ps5",
+            "quantity" : 3,
+            "discounts" : ["one plus one", "50 percent"]
+        }
+        pack = Pack(data)
+        self.assertEqual(pack.calculate(), 500)
