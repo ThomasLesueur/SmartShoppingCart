@@ -16,19 +16,29 @@ class Pack:
         self.discount_manager = DiscountManager()
     
     def validate(self):
-        if Product.objects.filter(name__contains=self.product_name) == None:
+        try:
+            product = Product.objects.get(name=self.product_name)
+        except Product.DoesNotExist:
+            product = None
+        if product == None:
             return False
         for discount in self.discounts:
-            if Discount.objects.filter(category__contains=discount['name']) == None:
+            try:
+                discount_search_result = Discount.objects.get(category=discount)
+            except Discount.DoesNotExist:
+                discount_search_result = None
+            if discount_search_result == None:
                 return False
         return True
     
     def calculate(self):
-        serializer = ProductSerializer(Product.objects.filter(name__contains=self.product_name))
+        product = Product.objects.get(name=self.product_name)
+        serializer = ProductSerializer(product)
         self.current_price = serializer.data['price']
-        self.total = current_price * self.quantity
+        self.total = self.current_price * self.quantity
         if len(self.discounts) != 0:
             self.total = self.discount_manager.calculate_discount(self)
+        return self.total
 
 class DiscountManager:
     def calculate_discount(self, pack):
