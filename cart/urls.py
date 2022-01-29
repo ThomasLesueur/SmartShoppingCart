@@ -7,6 +7,7 @@ urlpatterns = [
     path('products/<int:pk>/', views.ProductDetail.as_view()),
     path('discounts/', views.DiscountList.as_view()),
     path('discounts/<int:pk>/', views.DiscountDetail.as_view()),
+    path('calculate/', views.calculate_pack)
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
