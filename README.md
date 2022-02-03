@@ -15,6 +15,11 @@ SECRET_KEY="MY KEY"
 ```
 docker-compose up -d
 ```
+- faire les migrations
+```
+docker-compose run web python manage.py makemigrations cart
+docker-compose run web python manage.py migrate cart
+```
 - ajouter les fixtures
 
 ```
