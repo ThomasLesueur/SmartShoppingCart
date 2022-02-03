@@ -1,0 +1,34 @@
+[
+  {
+    "model": "cart.Product",
+    "pk": 1,
+    "fields": {
+      "name": "Switch",
+      "price": 299.50
+    }
+  },
+  {
+    "model": "cart.Product",
+    "pk": 2,
+    "fields": {
+      "name": "PS5",
+      "price": 557.30
+    }
+  },
+  {
+    "model": "cart.Product",
+    "pk": 3,
+    "fields": {
+      "name": "WiiU",
+      "price": 145.6
+    }
+  },
+  {
+    "model": "cart.Product",
+    "pk": 3,
+    "fields": {
+      "name": "Xbox serie X",
+      "price": 499.99
+    }
+  }
+]

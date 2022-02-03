@@ -1,0 +1,16 @@
+[
+  {
+    "model": "cart.Discount",
+    "pk": 1,
+    "fields": {
+      "category": "one plus one"
+    }
+  },
+  {
+    "model": "cart.Discount",
+    "pk": 2,
+    "fields": {
+      "category": "50 percent"
+    }
+  }
+]
